@@ -1,0 +1,55 @@
+# ---- data: never commit the raw or landing files ----
+# Leading slash = only the top-level data/ folder, so dashboard/data/
+# (the small exports the website reads) is still committed. See Step 7.
+/data/
+
+# ---- secrets ----
+.env
+.env.*
+!.env.example
+*.p8
+*.pem
+*.pub
+kaggle.json
+profiles.local.yml
+
+# ---- Python ----
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# ---- dbt ----
+dbt_project/clickstream/target/
+dbt_project/clickstream/dbt_packages/
+dbt_project/clickstream/logs/
+.user.yml
+
+# ---- Airflow (local Docker) ----
+airflow/logs/
+airflow/plugins/__pycache__/
+airflow/config/airflow.cfg
+
+# ---- website (Next.js) ----
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.vercel/
+
+# ---- local tooling ----
+.playwright-mcp/
+graphify-out/
+.claude/settings.local.json
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
