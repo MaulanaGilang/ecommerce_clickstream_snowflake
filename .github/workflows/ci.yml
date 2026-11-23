@@ -1,0 +1,19 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install duckdb boto3 pytest ruff sqlfluff dbt-snowflake
+      - run: ruff check .
+      - run: pytest tests --ignore=tests/test_dag.py
+      - name: dbt parse (no connection needed)
+        working-directory: dbt_project/clickstream
+        env:
+          SNOWFLAKE_ACCOUNT: ci-placeholder
+          SNOWFLAKE_PRIVATE_KEY_PATH: /dev/null
+        run: dbt deps && dbt parse --profiles-dir .
+      - run: sqlfluff lint snowflake/ --dialect snowflake

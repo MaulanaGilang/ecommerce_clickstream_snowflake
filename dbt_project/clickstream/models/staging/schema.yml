@@ -1,0 +1,14 @@
+version: 2
+models:
+  - name: stg_events_checked
+    columns:
+      - name: event_date
+        data_tests: [not_null]
+  - name: quarantine_events
+    columns:
+      - name: reject_reason
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['bad_timestamp', 'bad_event_type', 'bad_price', 'missing_user', 'missing_session']

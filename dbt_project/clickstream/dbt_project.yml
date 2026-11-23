@@ -1,0 +1,15 @@
+name: clickstream
+version: "1.0.0"
+config-version: 2
+profile: clickstream
+
+model-paths: ["models"]
+test-paths: ["tests"]
+
+vars:
+  run_date: "2019-10-01"
+
+models:
+  clickstream:
+    staging: {+schema: staging, +materialized: view}
+    marts:   {+schema: marts,   +materialized: table}

@@ -1,0 +1,5 @@
+[sqlfluff]
+dialect = snowflake
+max_line_length = 120
+# COPY INTO transforms are positional (no aliases), and setup scripts mix identifier case
+exclude_rules = AL03, ST06, CP02

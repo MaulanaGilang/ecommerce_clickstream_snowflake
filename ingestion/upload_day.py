@@ -1,8 +1,12 @@
-import os, sys, pathlib
+import os
+import pathlib
+import sys
+
 import boto3
 
-def upload_day(day: str, bucket: str, root: str = "data/landing") -> int:
-    s3 = boto3.client("s3")
+
+def upload_day(day: str, bucket: str, root: str = "data/landing", s3=None) -> int:
+    s3 = s3 or boto3.client("s3")
     files = sorted(pathlib.Path(root, f"event_date={day}").glob("*.parquet"))
     if not files:
         raise FileNotFoundError(f"no files for {day}")

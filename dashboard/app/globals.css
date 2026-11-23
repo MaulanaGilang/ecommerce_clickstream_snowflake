@@ -1,0 +1,158 @@
+/* Hallmark · genre: atmospheric · macrostructure: Map / Diagram + scroll story · theme: custom (vibe: "instrument panel at night, one signal") · enrichment: E5 hand-built pipeline diagram · nav: N9 edge-aligned · footer: Ft5 statement
+ * paper oklch(15.5% 0.012 255) · accent oklch(88% 0.18 128) lime signal · display Space Grotesk + body Geist + Geist Mono
+ * axes: dark / grotesk-sans / chromatic-other
+ */
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+
+  /* surfaces */
+  --color-paper: oklch(15.5% 0.012 255);
+  --color-paper-2: oklch(19% 0.014 255);
+  --color-paper-3: oklch(23.5% 0.016 255);
+  --color-rule: oklch(28% 0.014 255);
+  --color-rule-2: oklch(36% 0.016 255);
+
+  /* text */
+  --color-ink: oklch(96% 0.005 250);
+  --color-ink-2: oklch(81% 0.01 250);
+  --color-ink-3: oklch(66% 0.014 252);
+
+  /* the one signal */
+  --color-accent: oklch(88% 0.18 128);
+  --color-accent-ink: oklch(20% 0.04 128);
+  --color-accent-soft: oklch(88% 0.18 128 / 0.12);
+
+  /* data roles (validated: dark surface, CVD-safe all pairs) */
+  --color-data-kept: oklch(60% 0.11 240);
+  --color-data-dup: oklch(66% 0.14 72);
+  --color-data-bad: oklch(58% 0.18 27);
+  --color-data-context: oklch(42% 0.014 252);
+  --color-data-grid: oklch(24% 0.012 255);
+  --color-alert: oklch(72% 0.15 27);
+
+  --color-focus: var(--color-accent);
+
+  /* type */
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-data: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 160ms;
+  --dur-base: 320ms;
+  --dur-slow: 700ms;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+}
+
+@theme inline {
+  --color-paper: var(--color-paper);
+  --color-paper-2: var(--color-paper-2);
+  --color-paper-3: var(--color-paper-3);
+  --color-rule: var(--color-rule);
+  --color-rule-2: var(--color-rule-2);
+  --color-ink: var(--color-ink);
+  --color-ink-2: var(--color-ink-2);
+  --color-ink-3: var(--color-ink-3);
+  --color-accent: var(--color-accent);
+  --color-accent-ink: var(--color-accent-ink);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-alert: var(--color-alert);
+  --color-data-kept: var(--color-data-kept);
+  --color-data-dup: var(--color-data-dup);
+  --color-data-bad: var(--color-data-bad);
+  --color-data-context: var(--color-data-context);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-data);
+  --ease-out: var(--ease-out);
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink-2);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* one fixed bloom behind the hero, never on scrolling content */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(60rem 36rem at 78% -8%, oklch(88% 0.18 128 / 0.07), transparent 70%);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  color: var(--color-ink);
+  font-style: normal;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+.num {
+  font-family: var(--font-data);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+/* data flowing along a connector */
+@keyframes flow-x {
+  from { transform: translateX(-8px); opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  to { transform: translateX(var(--flow-len, 120px)); opacity: 0; }
+}
+@keyframes flow-y {
+  from { transform: translateY(-8px); opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  to { transform: translateY(var(--flow-len, 48px)); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
