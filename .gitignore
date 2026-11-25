@@ -44,6 +44,7 @@ out/
 .playwright-mcp/
 graphify-out/
 .claude/settings.local.json
+SETUP_STEPS.md
 
 # ---- OS / editor ----
 .DS_Store

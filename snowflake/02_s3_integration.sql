@@ -25,3 +25,13 @@ CREATE STAGE IF NOT EXISTS CLICKSTREAM.RAW.LANDING
 
 -- Should list the daily Parquet files. An access error here = trust policy or bucket name.
 LIST @CLICKSTREAM.RAW.LANDING;
+
+-- Fallback if "Error assuming AWS_ROLE" persists with a correct trust policy.
+-- The AWS free plan (Organizations-managed account) blocks outside accounts
+-- from assuming roles, so Snowflake reads with a read-only IAM user key instead.
+-- Type the key here in Snowsight only. Never save it in this file or commit it.
+-- CREATE OR REPLACE STAGE CLICKSTREAM.RAW.LANDING
+--     URL = 's3://gilang-clickstream-project2/landing/'
+--     CREDENTIALS = (AWS_KEY_ID = '<reader key id>' AWS_SECRET_KEY = '<reader secret>')
+--     FILE_FORMAT = CLICKSTREAM.RAW.PARQUET_FMT;
+-- LIST @CLICKSTREAM.RAW.LANDING;
