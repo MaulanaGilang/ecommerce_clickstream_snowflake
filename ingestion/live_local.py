@@ -31,7 +31,10 @@ def connect():
 
 cur = connect().cursor()
 cur.execute(
-    "select count(*), max(event_time), count(distinct _source_file), max(_loaded_at) "
+    # _loaded_at is stored in the account's local time (US Pacific by default);
+    # read it as session-local, then show it in UTC.
+    "select count(*), max(event_time), count(distinct _source_file), "
+    "convert_timezone('UTC', max(_loaded_at)::timestamp_ltz)::timestamp_ntz "
     "from CLICKSTREAM.RAW.EVENTS_LIVE"
 )
 rows, latest_event, files, last_load = cur.fetchone()

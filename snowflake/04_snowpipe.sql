@@ -2,10 +2,16 @@
 USE ROLE ACCOUNTADMIN;
 USE SCHEMA CLICKSTREAM.RAW;
 
+-- Same read-only IAM user key as the LANDING stage (the AWS free plan blocks the
+-- storage-integration role; see 02_s3_integration.sql). Type the key in Snowsight
+-- only. Never save it in this file or commit it.
 CREATE STAGE IF NOT EXISTS LANDING_LIVE
     URL = 's3://gilang-clickstream-project2/live/'
-    STORAGE_INTEGRATION = S3_INT
+    CREDENTIALS = (AWS_KEY_ID = '<reader key id>' AWS_SECRET_KEY = '<reader secret>')
     FILE_FORMAT = PARQUET_FMT;
+
+-- Should return no error (and no files yet: live/ is empty until the replay starts)
+LIST @LANDING_LIVE;
 
 -- Separate table so the replay never mixes with the batch history
 CREATE TABLE IF NOT EXISTS EVENTS_LIVE LIKE EVENTS;

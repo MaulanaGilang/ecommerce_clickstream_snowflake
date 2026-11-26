@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 380" width="1020" height="380" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+  <title>Architecture: CSV to S3 to Snowflake to dbt to website, orchestrated daily by Airflow, with a Snowpipe add-on</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#57606a"/>
+    </marker>
+  </defs>
+  <rect width="1020" height="380" fill="#ffffff"/>
+
+  <!-- Airflow band over the daily steps -->
+  <rect x="187" y="28" width="646" height="52" rx="8" fill="#eef6ee" stroke="#2da44e" stroke-width="1.5"/>
+  <text x="510" y="50" text-anchor="middle" font-size="14" font-weight="600" fill="#1a7f37">Airflow 3 · one run per day · catchup replays all 61 days</text>
+  <text x="510" y="70" text-anchor="middle" font-size="13" fill="#24292f" font-family="ui-monospace, Consolas, monospace">upload_to_s3 → copy_into_raw → dbt_build</text>
+  <line x1="260" y1="80" x2="260" y2="104" stroke="#2da44e" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="427" y1="80" x2="427" y2="104" stroke="#2da44e" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="677" y1="80" x2="677" y2="104" stroke="#2da44e" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+  <!-- Main batch path -->
+  <g font-size="12.5" fill="#24292f">
+    <rect x="20" y="106" width="145" height="86" rx="8" fill="#f6f8fa" stroke="#8c959f"/>
+    <text x="92.5" y="132" text-anchor="middle" font-size="14" font-weight="600">Raw CSVs</text>
+    <text x="92.5" y="152" text-anchor="middle">2 files, 14.7 GB</text>
+    <text x="92.5" y="170" text-anchor="middle">110M events</text>
+
+    <rect x="187" y="106" width="145" height="86" rx="8" fill="#fff4e5" stroke="#d4791a"/>
+    <text x="259.5" y="132" text-anchor="middle" font-size="14" font-weight="600">S3 landing/</text>
+    <text x="259.5" y="152" text-anchor="middle">61 daily Parquet</text>
+    <text x="259.5" y="170" text-anchor="middle">folders, 2.7 GB</text>
+
+    <rect x="354" y="106" width="145" height="86" rx="8" fill="#e8f3fc" stroke="#1f8ad1"/>
+    <text x="426.5" y="132" text-anchor="middle" font-size="14" font-weight="600">Snowflake RAW</text>
+    <text x="426.5" y="152" text-anchor="middle">COPY INTO,</text>
+    <text x="426.5" y="170" text-anchor="middle">every column text</text>
+
+    <rect x="521" y="106" width="145" height="86" rx="8" fill="#fdeeea" stroke="#e05a36"/>
+    <text x="593.5" y="132" text-anchor="middle" font-size="14" font-weight="600">dbt staging</text>
+    <text x="593.5" y="152" text-anchor="middle">typed, quarantined,</text>
+    <text x="593.5" y="170" text-anchor="middle">deduplicated</text>
+
+    <rect x="688" y="106" width="145" height="86" rx="8" fill="#fdeeea" stroke="#e05a36"/>
+    <text x="760.5" y="132" text-anchor="middle" font-size="14" font-weight="600">dbt marts</text>
+    <text x="760.5" y="152" text-anchor="middle">sessions, funnel,</text>
+    <text x="760.5" y="170" text-anchor="middle">products, dates</text>
+
+    <rect x="855" y="106" width="145" height="86" rx="8" fill="#f6f8fa" stroke="#8c959f"/>
+    <text x="927.5" y="132" text-anchor="middle" font-size="14" font-weight="600">Website</text>
+    <text x="927.5" y="152" text-anchor="middle">export.py → JSON,</text>
+    <text x="927.5" y="170" text-anchor="middle">static Next.js</text>
+  </g>
+  <g stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)">
+    <line x1="165" y1="149" x2="185" y2="149"/>
+    <line x1="332" y1="149" x2="352" y2="149"/>
+    <line x1="499" y1="149" x2="519" y2="149"/>
+    <line x1="666" y1="149" x2="686" y2="149"/>
+    <line x1="833" y1="149" x2="853" y2="149"/>
+  </g>
+  <text x="92.5" y="212" text-anchor="middle" font-size="11.5" fill="#57606a">split once (DuckDB)</text>
+  <text x="593.5" y="212" text-anchor="middle" font-size="11.5" fill="#57606a">12 quarantined, 130,750 dupes</text>
+  <text x="927.5" y="212" text-anchor="middle" font-size="11.5" fill="#57606a">never queries Snowflake</text>
+
+  <!-- Snowpipe add-on -->
+  <line x1="20" y1="240" x2="1000" y2="240" stroke="#d0d7de" stroke-dasharray="5 4"/>
+  <text x="20" y="266" font-size="13" font-weight="600" fill="#57606a">Add-on: near-real-time loading (median 11 s)</text>
+  <g font-size="12.5" fill="#24292f">
+    <rect x="20" y="282" width="145" height="72" rx="8" fill="#f6f8fa" stroke="#8c959f"/>
+    <text x="92.5" y="308" text-anchor="middle" font-size="14" font-weight="600">replay_live.py</text>
+    <text x="92.5" y="328" text-anchor="middle">1 file per minute</text>
+
+    <rect x="187" y="282" width="145" height="72" rx="8" fill="#fff4e5" stroke="#d4791a"/>
+    <text x="259.5" y="308" text-anchor="middle" font-size="14" font-weight="600">S3 live/</text>
+    <text x="259.5" y="328" text-anchor="middle">event → SQS</text>
+
+    <rect x="354" y="282" width="145" height="72" rx="8" fill="#e8f3fc" stroke="#1f8ad1"/>
+    <text x="426.5" y="308" text-anchor="middle" font-size="14" font-weight="600">Snowpipe</text>
+    <text x="426.5" y="328" text-anchor="middle">auto-ingest</text>
+
+    <rect x="521" y="282" width="145" height="72" rx="8" fill="#e8f3fc" stroke="#1f8ad1"/>
+    <text x="593.5" y="308" text-anchor="middle" font-size="14" font-weight="600">RAW.EVENTS_LIVE</text>
+    <text x="593.5" y="328" text-anchor="middle">separate table</text>
+  </g>
+  <g stroke="#57606a" stroke-width="1.5" marker-end="url(#arrow)">
+    <line x1="165" y1="318" x2="185" y2="318"/>
+    <line x1="332" y1="318" x2="352" y2="318"/>
+    <line x1="499" y1="318" x2="519" y2="318"/>
+  </g>
+</svg>

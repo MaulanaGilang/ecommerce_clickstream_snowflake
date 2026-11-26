@@ -55,6 +55,8 @@ export default function Home() {
   const mm = Math.round((backfillS % 3600) / 60);
 
   const bandMax = Math.max(...bands.map((b) => b.conversion));
+  const bandPeak = bands.reduce((a, b) => (b.conversion > a.conversion ? b : a));
+  const bandLow = bands.reduce((a, b) => (b.conversion < a.conversion ? b : a));
 
   return (
     <>
@@ -158,7 +160,9 @@ export default function Home() {
             <div>
               <h3 className="text-2xl font-medium">Price is the second filter.</h3>
               <p className="mt-3 max-w-[44ch] text-ink-2">
-                Conversion peaks at $25-50 and drops with every band above it.
+                Conversion peaks at {bandPeak.band} ({fmtPct(bandPeak.conversion)}) and is lowest{" "}
+                {bandLow.band.startsWith("<") ? `under ${bandLow.band.slice(2)}` : `at ${bandLow.band}`} (
+                {fmtPct(bandLow.conversion)}).
               </p>
               <div className="mt-8">
                 <RankBars
@@ -302,8 +306,8 @@ export default function Home() {
           </dl>
           {retried.length ? (
             <p className="mt-8 max-w-[60ch] text-sm text-ink-3">
-              {fmtDay(retried[0].ds)} needed a second attempt. Airflow&apos;s automatic retry re-ran the day and it passed,
-              with nothing fixed by hand.
+              {fmtDay(retried[0].ds)} needed a second attempt after the local Docker engine ran out of memory and was
+              restarted. Airflow re-ran the day; because every step is idempotent, it loaded no duplicate rows.
             </p>
           ) : null}
           <p className="mt-4 max-w-[60ch] text-sm text-ink-3">
