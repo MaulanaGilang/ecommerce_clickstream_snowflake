@@ -4,7 +4,7 @@ Idempotent daily ELT for 110M e-commerce events on **AWS S3, Snowflake, dbt and 
 
 [![ci](https://github.com/MaulanaGilang/ecommerce_clickstream_snowflake/actions/workflows/ci.yml/badge.svg)](https://github.com/MaulanaGilang/ecommerce_clickstream_snowflake/actions/workflows/ci.yml)
 
-**Live dashboard:** _link coming after deploy_
+**Live dashboard:** [ecommerce-clickstream-snowflake.vercel.app](https://ecommerce-clickstream-snowflake.vercel.app/)
 
 **The question:** where do shoppers drop off between viewing, adding to cart and buying, and which categories, brands and price ranges convert best?
 
